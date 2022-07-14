@@ -1,0 +1,11 @@
+name: Pipeline Deployment
+description: Annotates the build with a file count
+author: https://github.com/debora-caylent
+requirements: []
+configuration:
+  properties:
+    workspace:
+      type: string
+    account_id:
+      type: string
+  additionalProperties: false
