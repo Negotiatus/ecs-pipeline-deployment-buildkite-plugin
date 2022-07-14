@@ -11,7 +11,7 @@ steps:
   - label: ":ecs: :rocket:"
     key: "ecs_deploy"
     plugins:
-      - Negotiatus/pipeline-deployment#v1.0.0:
+      - Negotiatus/ecs-pipeline-deployment#v1.0.0:
           workspace: 'sandbox'
           account_id: '6565656'
 Options
