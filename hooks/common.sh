@@ -4,29 +4,6 @@
 
 ### String Conversion Functions
 
-snake_case() {
-    # Non-alnum to dashes, condense multiple dashes
-    # Trim leading and trailing dashes
-    # Convert to lowercase
-    echo $@ | sed -e 's/[^a-zA-Z0-9]/_/g' -e 's/\(_\)*/\1/g' \
-            | sed -E 's/^_*|_*$//g' \
-            | tr '[:upper:]' '[:lower:]'
-}
-
-kebab_case() {
-    # Non-alnum to dashes, condense multiple dashes
-    # Trim leading and trailing dashes
-    # Convert to lowercase
-    echo $@ | sed -e 's/[^a-zA-Z0-9]/-/g' -e 's/\(-\)*/\1/g' \
-            | sed -E 's/^-*|-*$//g' \
-            | tr '[:upper:]' '[:lower:]'
-}
-
-json_encode_string_list() {
-    local groups="$1"
-    jq -c -n --arg groups "$groups" '$groups | split(" ")'
-}
-
 ### Buildkite Functions ###
 
 render_task_status() {

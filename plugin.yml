@@ -9,7 +9,10 @@ configuration:
       type: string
     account_id:
       type: string
+    docker_registry:
+      type: string      
   additionalProperties: false
   required:
     - workspace
     - account_id
+    - docker_registry
