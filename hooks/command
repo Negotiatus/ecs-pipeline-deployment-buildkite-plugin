@@ -28,11 +28,11 @@ else
     wait_for_ecs_services_to_be_healthy $CLUSTER "$SERVICES"
 fi
 
-echo "--- :ecr: Getting manifest for $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DOCKER_REGISTRY:$WORKSPACE'"
+echo "--- :ecr: Getting manifest for $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DOCKER_REGISTRY/$APPLICATION:$WORKSPACE'"
 old_manifest=`get_ecr_manifest $APPLICATION $WORKSPACE pass_if_not_found`
 echo $old_manifest
 
-echo "--- :ecr: Getting manifest for $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DOCKER_REGISTRY:$DEPLOY_TAG'"
+echo "--- :ecr: Getting manifest for $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DOCKER_REGISTRY/$APPLICATION:$DEPLOY_TAG'"
 new_manifest=`get_ecr_manifest $APPLICATION $DEPLOY_TAG` || (echo "$new_manifest" && exit 1)
 echo "$new_manifest"
 
