@@ -1,7 +1,8 @@
 name: ECS Pipeline Deployment
 description: Updates a ECS service
 author: https://github.com/Negotiatus
-requirements: []
+requirements:
+  - aws
 configuration:
   properties:
     workspace:
@@ -9,3 +10,6 @@ configuration:
     account_id:
       type: string
   additionalProperties: false
+  required:
+    - workspace
+    - account_id
