@@ -1,6 +1,6 @@
-name: Pipeline Deployment
+name: ECS Pipeline Deployment
 description: Annotates the build with a file count
-author: https://github.com/debora-caylent
+author: https://github.com/Negotiatus
 requirements: []
 configuration:
   properties:
