@@ -1,31 +1,24 @@
 # pipeline-deployment-buildkite-plugin
 Build + deploy ecs services
 
-# Step 1: Create a new git repository
-# Step 2: Add a plugin.yml
-```
-name: File Counter
-description: Annotates the build with a file count
-author: https://github.com/a-github-user
-requirements: []
-configuration:
-  properties:
-    pattern:
-      type: string
-  additionalProperties: false
-```
-## Valid plugin.yml properties
-Property	Description
-name	The name of the plugin, in Title Case.
-description	A short sentence describing what the plugin does.
-author	A URL to the plugin author (for example, website or GitHub profile).
-requirements	An array of commands that are expected to exist in the agent's $PATH.
-configuration	A JSON Schema describing the valid configuration options available.
-# Step 3: Validate the plugin.yml
-`docker-compose run --rm lint`
+A Buildkite plugin for updating ECS services.
 
-# Step 4 
-Add the the scripts to the hooks directory
+Requires the aws cli tool be installed
+Updates a task definition based on a given workspace and account ID
+Waits for the service to stabilize (wait services-stable)
+Example
+steps:
+  - label: ":ecs: :rocket:"
+    key: "ecs_deploy"
+    plugins:
+      - Negotiatus/pipeline-deployment#v1.0.0:
+          workspace: 'sandbox'
+          account_id: '6565656'
+Options
+workspace
+The name of the workspace.
 
-# Step 5
-Add the topic `buildkite-plugin` to the repo and wait for 1 hour to be publish.
+Example: "sandbox"
+
+account_id
+The account ID.
