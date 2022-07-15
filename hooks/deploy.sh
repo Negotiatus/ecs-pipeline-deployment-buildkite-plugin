@@ -51,4 +51,4 @@ else
     ! [ $? -eq 0 ] && echo "ERROR: Could not put ECR image tag (see above)" && exit 1
 fi
 
-./restart_services.sh $WORKSPACE $AWS_PROFILE
+$SCRIPT_DIR/restart_services.sh $WORKSPACE $AWS_PROFILE
