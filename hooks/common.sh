@@ -253,50 +253,6 @@ get_ecr_manifest() {
     cat "$tmp_file"
 }
 
-get_ec2_instance_info_by_name() {
-    # Gets info about a given EC2 instance given a 'Name' tag value
-    local tmp_file="`mktemp`" name="$1"
-    [[ "$AWS_PROFILE" ]] && profile="$AWS_PROFILE"
-    [[ "$2" ]] && profile="$2"
-    [[ -z "$profile" ]] && echo "Must either set AWS_PROFILE or pass a profile name" && return 1
-    # Ordering of filters matters! https://medium.com/@email.william.palmer/filtering-aws-cli-results-45ce4345bf33
-    aws ec2 describe-instances --filters Name=instance-state-name,Values=running \
-                               --filters Name=tag:Name,Values=$name \
-                               --output json \
-                               --profile $AWS_PROFILE > "$tmp_file";
-    ! [ $? -eq 0 ] && echo "ERROR: Could not find EC2 instance with name '$name' (see above)" && return 1;
-    cat "$tmp_file"
-}
-
-get_subnets() {
-    # Get a list of subnets by Name tag (supports wildcard values in name filter)
-    local tmp_file="`mktemp`" name="$1"
-    [[ "$AWS_PROFILE" ]] && profile="$AWS_PROFILE"
-    [[ "$2" ]] && profile="$2"
-    [[ -z "$profile" ]] && echo "Must either set AWS_PROFILE or pass a profile name" && return 1
-    tmp_file=`mktemp`
-    aws ec2 describe-subnets --filters "Name=tag:Name,Values=$name" \
-                             --profile $profile \
-                             --output json > "$tmp_file"
-    ! [ $? -eq 0 ] && echo "ERROR: Could not get subnets (see above)" && return 1
-    ! [[ "`cat $tmp_file | jq -r '.Subnets | length > 0'`" == true ]] && echo "ERROR: No Subnets matching '$name'" && return 1
-    cat $tmp_file
-}
-
-get_security_groups() {
-    # Get a list of security groups by group-name (supports wildcard values in name filter)
-    local tmp_file="`mktemp`" name="$1"
-    [[ "$AWS_PROFILE" ]] && profile="$AWS_PROFILE"
-    [[ "$2" ]] && profile="$2"
-    [[ -z "$profile" ]] && echo "Must either set AWS_PROFILE or pass a profile name" && return 1
-    aws ec2 describe-security-groups --filters "Name=group-name,Values=$name" \
-                                     --profile $profile \
-                                     --output json > "$tmp_file"
-    ! [ $? -eq 0 ] && echo "ERROR: Could not get security groups (see above)" && return 1
-    ! [[ "`cat $tmp_file | jq -r '.SecurityGroups | length > 0'`" == true ]] && echo "ERROR: No Security Groups matching '$name'" && return 1
-    cat $tmp_file
-}
-
 ### Variables ###
 
 echo "--- :information_source: Loading environment information"
