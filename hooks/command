@@ -11,7 +11,7 @@ ACCOUNT_ID="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ACCOUNT_ID"
 
 if [[ $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_FULL_DEPLOYMENT == true ]]; then
     echo "--- :rocket: :ecs: :ecr: Getting ECR images and restarting the services"
-    # deploy.sh
+    $SCRIPT_DIR/deploy.sh
 else
     echo "--- :rocket: :ecs: Restarting Services ..."
     AWS_PROFILE=`aws_assume_role BuildkiteDeploy $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
