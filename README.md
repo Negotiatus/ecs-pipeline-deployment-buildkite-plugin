@@ -24,4 +24,5 @@ Parameter | Definition | Example |
 --- | --- | ---
 workspace | Workspace name | sandbox | 
 account_id | The account ID | 209637752 | 
-docker_registry | ECR registry URL | aws_account_id.dkr.ecr.region.amazonaws.com | 
+docker_registry | ECR registry URL | aws_account_id.dkr.ecr.region.amazonaws.com |
+full_deployment | If true then ecr manifest and restart services will be performed | true or false | 
