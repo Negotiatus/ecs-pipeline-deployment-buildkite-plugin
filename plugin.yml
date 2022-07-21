@@ -5,17 +5,23 @@ requirements:
   - aws
 configuration:
   properties:
-    full_deployment:
-      type: boolean
-    workspace:
-      type: string
     account_id:
       type: string
-    docker_registry:
+    environment:
       type: string      
+    service:
+      type: string
+    role:
+      type: string
+    deployment:
+      type: boolean
+    docker_registry:
+      type: string
   additionalProperties: false
   required:
-    - workspace
     - account_id
+    - environment
+    - service
+    - role
+    - deployment
     - docker_registry
-    - full_deployment

@@ -6,32 +6,6 @@
 
 ### Buildkite Functions ###
 
-render_task_status() {
-    local cluster="$1" task_name="$2" task_id="$3" task_command="$4" status="$5"
-    cat <<-EOF
-<a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/$cluster/tasks/$task_id/details">$task_name ($task_id)</a> <code>$task_command</code> - $status
-EOF
-}
-
-render_services_status_row() {
-    local cluster="$1" service="$2" last_events="$3" status="$4"
-    cat <<-EOF
-    <tr>
-        <td>$status</td>
-        <td><a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/$cluster/services/$service/details">$service</a></td>
-        <td>
-            <div class="flex">
-                <code class="col-10">$last_events</code>
-                <div class="col-2 pl2">
-                    <a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/$cluster/services/$service/events">More...</a>
-                </div>
-            </div>
-        </td>
-    </tr>
-
-
-EOF
-}
 
 render_services_status_annotation() {
     local cluster="$1" rows="$2"
@@ -92,26 +66,6 @@ aws_assume_role() {
     aws configure set aws_session_token $session_token --profile $profile;
     aws configure set region us-east-1 --profile $profile;
     echo "$profile"
-}
-
-start_ecs_task() {
-    # Starts a ECS task using the specified task definition on a given cluster
-    local tmp_file="`mktemp`" cluster="$1" task_definition="$2" network_configuration="$3" container_overrides="$4" tags="$5"
-    [[ "$AWS_PROFILE" ]] && profile="$AWS_PROFILE"
-    [[ "$6" ]] && profile="$6"
-    [[ -z "$profile" ]] && echo "Must either set AWS_PROFILE or pass a profile name" && return 1
-    tmp_file=`mktemp`
-    aws ecs run-task --cluster "$cluster" \
-                     --task-definition "$task_definition" \
-                     --network-configuration "$network_configuration" \
-                     --overrides "$container_overrides" \
-                     --launch-type FARGATE \
-                     --enable-ecs-managed-tags \
-                     --tags "$tags" \
-                     --profile $profile \
-                     --output json > "$tmp_file"
-    ! [ $? -eq 0 ] && echo "ERROR: Could not start task (see above)" && return 1
-    cat $tmp_file
 }
 
 get_ecs_tasks_info() {
