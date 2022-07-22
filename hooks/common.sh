@@ -4,8 +4,57 @@
 
 ### String Conversion Functions
 
+snake_case() {
+    # Non-alnum to dashes, condense multiple dashes
+    # Trim leading and trailing dashes
+    # Convert to lowercase
+    echo $@ | sed -e 's/[^a-zA-Z0-9]/_/g' -e 's/\(_\)*/\1/g' \
+            | sed -E 's/^_*|_*$//g' \
+            | tr '[:upper:]' '[:lower:]'
+}
+
+kebab_case() {
+    # Non-alnum to dashes, condense multiple dashes
+    # Trim leading and trailing dashes
+    # Convert to lowercase
+    echo $@ | sed -e 's/[^a-zA-Z0-9]/-/g' -e 's/\(-\)*/\1/g' \
+            | sed -E 's/^-*|-*$//g' \
+            | tr '[:upper:]' '[:lower:]'
+}
+
+json_encode_string_list() {
+    local groups="$1"
+    jq -c -n --arg groups "$groups" '$groups | split(" ")'
+}
+
 ### Buildkite Functions ###
 
+render_task_status() {
+    local cluster="$1" task_name="$2" task_id="$3" task_command="$4" status="$5"
+    cat <<-EOF
+<a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/$cluster/tasks/$task_id/details">$task_name ($task_id)</a> <code>$task_command</code> - $status
+EOF
+}
+
+render_services_status_row() {
+    local cluster="$1" service="$2" last_events="$3" status="$4"
+    cat <<-EOF
+    <tr>
+        <td>$status</td>
+        <td><a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/$cluster/services/$service/details">$service</a></td>
+        <td>
+            <div class="flex">
+                <code class="col-10">$last_events</code>
+                <div class="col-2 pl2">
+                    <a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/$cluster/services/$service/events">More...</a>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+
+EOF
+}
 
 render_services_status_annotation() {
     local cluster="$1" rows="$2"
