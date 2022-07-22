@@ -4,6 +4,29 @@
 
 ### String Conversion Functions
 
+snake_case() {
+    # Non-alnum to dashes, condense multiple dashes
+    # Trim leading and trailing dashes
+    # Convert to lowercase
+    echo $@ | sed -e 's/[^a-zA-Z0-9]/_/g' -e 's/\(_\)*/\1/g' \
+            | sed -E 's/^_*|_*$//g' \
+            | tr '[:upper:]' '[:lower:]'
+}
+
+kebab_case() {
+    # Non-alnum to dashes, condense multiple dashes
+    # Trim leading and trailing dashes
+    # Convert to lowercase
+    echo $@ | sed -e 's/[^a-zA-Z0-9]/-/g' -e 's/\(-\)*/\1/g' \
+            | sed -E 's/^-*|-*$//g' \
+            | tr '[:upper:]' '[:lower:]'
+}
+
+json_encode_string_list() {
+    local groups="$1"
+    jq -c -n --arg groups "$groups" '$groups | split(" ")'
+}
+
 ### Buildkite Functions ###
 
 render_task_status() {
@@ -92,26 +115,6 @@ aws_assume_role() {
     aws configure set aws_session_token $session_token --profile $profile;
     aws configure set region us-east-1 --profile $profile;
     echo "$profile"
-}
-
-start_ecs_task() {
-    # Starts a ECS task using the specified task definition on a given cluster
-    local tmp_file="`mktemp`" cluster="$1" task_definition="$2" network_configuration="$3" container_overrides="$4" tags="$5"
-    [[ "$AWS_PROFILE" ]] && profile="$AWS_PROFILE"
-    [[ "$6" ]] && profile="$6"
-    [[ -z "$profile" ]] && echo "Must either set AWS_PROFILE or pass a profile name" && return 1
-    tmp_file=`mktemp`
-    aws ecs run-task --cluster "$cluster" \
-                     --task-definition "$task_definition" \
-                     --network-configuration "$network_configuration" \
-                     --overrides "$container_overrides" \
-                     --launch-type FARGATE \
-                     --enable-ecs-managed-tags \
-                     --tags "$tags" \
-                     --profile $profile \
-                     --output json > "$tmp_file"
-    ! [ $? -eq 0 ] && echo "ERROR: Could not start task (see above)" && return 1
-    cat $tmp_file
 }
 
 get_ecs_tasks_info() {

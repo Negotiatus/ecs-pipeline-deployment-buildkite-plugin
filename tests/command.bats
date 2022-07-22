@@ -6,7 +6,7 @@ load '/usr/local/lib/bats/load.bash'
 # export BUILDKITE_AGENT_STUB_DEBUG=/dev/tty
 
 @test "Creates an annotation with the file count" {
-  export BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_WORKSPACE="sandbox"
+  export BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ENVIRONMENT="sandbox"
   export BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ACCOUNT_ID="56565"
 
   stub buildkite-agent 'annotate "Found 1 files matching *.bats" : echo Annotation created'

@@ -12,9 +12,12 @@ steps:
   - label: ":ecs: :rocket:"
     key: "ecs_deploy"
     plugins:
-      - Negotiatus/ecs-pipeline-deployment#v1.0.0:
-          workspace: 'sandbox'
+      - Negotiatus/ecs-pipeline-deployment#v1.0.1:
           account_id: '6565656'
+          environment: 'sandbox'
+          service: 'assistant-test'
+          role: 'BuildkiteRole'
+          deployment: true
           docker_registry: '${ECR_REPOSITORY}'
 ```
 
@@ -22,7 +25,10 @@ steps:
 
 Parameter | Definition | Example | 
 --- | --- | ---
-workspace | Workspace name | sandbox | 
+environment | Environment name | sandbox | 
 account_id | The account ID | 209637752 | 
 docker_registry | ECR registry URL | aws_account_id.dkr.ecr.region.amazonaws.com |
-full_deployment | If true then ecr manifest and restart services will be performed | true or false | 
+deployment | If true then ecr manifest and restart services will be performed | true or false | 
+role | Assume role name | BuilkiteRole | 
+service | Service Name | Monolith | 
+deploy_tag | deploy tag used in the previous step | deploy-dev | 

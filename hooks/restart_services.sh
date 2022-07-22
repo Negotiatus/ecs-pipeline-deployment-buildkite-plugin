@@ -6,16 +6,16 @@ source $SCRIPT_DIR/common.sh
 
 set -e
 
-WORKSPACE="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_WORKSPACE"
+ENVIRONMENT="$1"
 ACCOUNT_ID="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ACCOUNT_ID"
-CLUSTER="$APPLICATION-$WORKSPACE"
+CLUSTER="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_SERVICE"
 
 if [[ "$2" ]]; then
     AWS_PROFILE="$2"
     echo "--- :aws-iam: Using profile '$AWS_PROFILE'"
 else
-    echo "--- :aws-iam: Assuming BuildkiteDeploy role on $WORKSPACE ($ACCOUNT_ID)"
-    AWS_PROFILE=`aws_assume_role BuildkiteDeploy $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
+    echo "--- :aws-iam: Assuming $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE role on $ENVIRONMENT ($ACCOUNT_ID)"
+    AWS_PROFILE=`aws_assume_role $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
 fi
 
 echo "--- :ecs: Getting ECS service list for '$CLUSTER'"
