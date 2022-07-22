@@ -12,7 +12,7 @@ steps:
   - label: ":ecs: :rocket:"
     key: "ecs_deploy"
     plugins:
-      - Negotiatus/ecs-pipeline-deployment#v1.0.1:
+      - Negotiatus/ecs-pipeline-deployment#v1.0.2:
           account_id: '6565656'
           environment: 'sandbox'
           service: 'assistant-test'
@@ -30,5 +30,5 @@ account_id | The account ID | 209637752 |
 docker_registry | ECR registry URL | aws_account_id.dkr.ecr.region.amazonaws.com |
 deployment | If true then ecr manifest and restart services will be performed | true or false | 
 role | Assume role name | BuilkiteRole | 
-service | Service Name | Monolith | 
+service | Service Name | assistant-sandbox | 
 deploy_tag | deploy tag used in the previous step | deploy-dev | 
