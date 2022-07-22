@@ -13,6 +13,8 @@ configuration:
       type: string
     role:
       type: string
+    deploy_tag:
+      type: string
     deployment:
       type: boolean
     docker_registry:
@@ -24,4 +26,5 @@ configuration:
     - service
     - role
     - deployment
+    - deploy_tag
     - docker_registry
