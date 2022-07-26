@@ -19,6 +19,8 @@ configuration:
       type: boolean
     docker_registry:
       type: string
+    beta:
+      type: boolean
   additionalProperties: false
   required:
     - account_id
@@ -28,3 +30,4 @@ configuration:
     - deployment
     - deploy_tag
     - docker_registry
+    - beta
