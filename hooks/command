@@ -14,11 +14,11 @@ if [[ $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_BETA == true ]]; then
     $SCRIPT_DIR/cli.sh
 fi
 
-if [[ $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DEPLOYMENT == true ]]; then
-    echo "--- :rocket: :ecs: :ecr: Getting ECR images and restarting the services"
-    $SCRIPT_DIR/deploy.sh $ENVIRONMENT $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DEPLOY_TAG
-else
-    echo "--- :rocket: :ecs: Restarting Services ..."
-    AWS_PROFILE=`aws_assume_role $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
-    $SCRIPT_DIR/restart_services.sh $ENVIRONMENT $AWS_PROFILE
-fi
+# if [[ $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DEPLOYMENT == true ]]; then
+#     echo "--- :rocket: :ecs: :ecr: Getting ECR images and restarting the services"
+#     $SCRIPT_DIR/deploy.sh $ENVIRONMENT $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DEPLOY_TAG
+# else
+#     echo "--- :rocket: :ecs: Restarting Services ..."
+#     AWS_PROFILE=`aws_assume_role $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
+#     $SCRIPT_DIR/restart_services.sh $ENVIRONMENT $AWS_PROFILE
+# fi
