@@ -15,8 +15,6 @@ configuration:
       type: string
     deploy_tag:
       type: string
-    deployment:
-      type: boolean
     docker_registry:
       type: string
     beta:
@@ -27,7 +25,6 @@ configuration:
     - environment
     - service
     - role
-    - deployment
     - deploy_tag
     - docker_registry
     - beta

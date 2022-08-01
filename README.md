@@ -17,7 +17,6 @@ steps:
           environment: 'sandbox'
           service: 'assistant-test'
           role: 'BuildkiteRole'
-          deployment: true
           docker_registry: '${ECR_REPOSITORY}'
 ```
 
@@ -28,7 +27,6 @@ Parameter | Definition | Example |
 environment | Environment name | sandbox | 
 account_id | The account ID | 209637752 | 
 docker_registry | ECR registry URL | aws_account_id.dkr.ecr.region.amazonaws.com |
-deployment | If true then ecr manifest and restart services will be performed | true or false | 
 role | Assume role name | BuilkiteRole | 
 service | Service Name | assistant-sandbox | 
 deploy_tag | deploy tag used in the previous step | deploy-dev | 
