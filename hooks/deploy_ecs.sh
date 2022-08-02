@@ -36,5 +36,6 @@ echo "$SERVICES" | tr '\t' '\n'
 for service in $SERVICES; do
     service_name=`echo $service | cut -d/ -f3`
     echo "--- service: $service --- service_name: $service_name"
+    AWS_PROFILE=`aws_assume_role $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
     ecs deploy $CLUSTER $service --image $service_name $IMAGE --health-check $service_name "curl -f $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_URL" 30 5 3 0
 done

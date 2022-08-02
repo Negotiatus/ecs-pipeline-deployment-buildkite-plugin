@@ -14,13 +14,10 @@ echo "--- :aws-iam: Assuming $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE role
 AWS_PROFILE=`aws_assume_role $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
 CLUSTER="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_SERVICE"
 
-echo "--- :ecs: Getting ECS service list for '$CLUSTER'"
+echo "--- :ecs: Starting health checks for cluster: '$CLUSTER'"
 SERVICES=`list_ecs_services $CLUSTER` || (echo "$SERVICES" && exit 1)
-echo "Found `echo \"$SERVICES\" | wc -w | awk '{print $1}'` services:"
-echo "$SERVICES" | tr '\t' '\n'
 for service in $SERVICES; do
     service_name=`echo $service | cut -d/ -f3`
-    echo "--- :ecs: Getting ECS task list for '$service_name ($CLUSTER)'"
     TASKS=`list_ecs_tasks $CLUSTER $service_name` || (echo "$TASKS" && exit 1)
     echo "--- :ecs: Getting ECS service Healthy status for '$service_name'"
     for task_arn in $TASKS; do
