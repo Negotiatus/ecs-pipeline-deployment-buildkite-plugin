@@ -17,6 +17,8 @@ configuration:
       type: string
     docker_registry:
       type: string
+    url:
+      type: string
     beta:
       type: boolean
   additionalProperties: false
@@ -27,4 +29,5 @@ configuration:
     - role
     - deploy_tag
     - docker_registry
+    - url
     - beta
