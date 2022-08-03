@@ -15,7 +15,7 @@ BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_URL="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEP
 
 
 echo "--- :aws-iam: Assuming $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE role on $ENVIRONMENT ($ACCOUNT_ID)"
-export AWS_PROFILE=BuildkiteDeploy207628655394 
+export AWS_PROFILE=deploy 
 AWS_PROFILE=`aws_assume_role $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
 CLUSTER="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_SERVICE"
 
@@ -25,5 +25,6 @@ echo "Found `echo \"$SERVICES\" | wc -w | awk '{print $1}'` services:"
 echo "$SERVICES" | tr '\t' '\n'
 for service in $SERVICES; do
     service_name=`echo $service | cut -d/ -f3`
+    echo "--- HealthCheck URL $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_URL"
     ecs deploy $CLUSTER $service --image $service_name $IMAGE --health-check $service_name "curl -f $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_URL" 30 5 3 0
 done
