@@ -2,18 +2,12 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source $SCRIPT_DIR/common.sh
+source $SCRIPT_DIR/functions.sh
 
 set -e
 
 ENVIRONMENT="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ENVIRONMENT"
 ACCOUNT_ID="$BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ACCOUNT_ID"
 
-if [[ $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DEPLOYMENT == true ]]; then
-    echo "--- :rocket: :ecs: :ecr: Getting ECR images and restarting the services"
-    $SCRIPT_DIR/deploy.sh $ENVIRONMENT $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DEPLOY_TAG
-else
-    echo "--- :rocket: :ecs: Restarting Services ..."
-    AWS_PROFILE=`aws_assume_role $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_ROLE $ACCOUNT_ID` || (echo "$AWS_PROFILE" && exit 1)
-    $SCRIPT_DIR/restart_services.sh $ENVIRONMENT $AWS_PROFILE
-fi
+$SCRIPT_DIR/deploy_ecs.sh $ENVIRONMENT $ACCOUNT_ID $BUILDKITE_PLUGIN_ECS_PIPELINE_DEPLOYMENT_DEPLOY_TAG
+$SCRIPT_DIR/healthcheck.sh $ENVIRONMENT $ACCOUNT_ID

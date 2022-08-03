@@ -15,16 +15,19 @@ configuration:
       type: string
     deploy_tag:
       type: string
-    deployment:
-      type: boolean
     docker_registry:
       type: string
+    url:
+      type: string
+    beta:
+      type: boolean
   additionalProperties: false
   required:
     - account_id
     - environment
     - service
     - role
-    - deployment
     - deploy_tag
     - docker_registry
+    - url
+    - beta

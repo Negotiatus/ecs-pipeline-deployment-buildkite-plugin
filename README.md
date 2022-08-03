@@ -12,12 +12,12 @@ steps:
   - label: ":ecs: :rocket:"
     key: "ecs_deploy"
     plugins:
-      - Negotiatus/ecs-pipeline-deployment#v1.0.2:
+      - Negotiatus/ecs-pipeline-deployment#v1.0.3:
           account_id: '6565656'
           environment: 'sandbox'
           service: 'assistant-test'
           role: 'BuildkiteRole'
-          deployment: true
+          url: 'healthcheck_url'
           docker_registry: '${ECR_REPOSITORY}'
 ```
 
@@ -28,7 +28,7 @@ Parameter | Definition | Example |
 environment | Environment name | sandbox | 
 account_id | The account ID | 209637752 | 
 docker_registry | ECR registry URL | aws_account_id.dkr.ecr.region.amazonaws.com |
-deployment | If true then ecr manifest and restart services will be performed | true or false | 
 role | Assume role name | BuilkiteRole | 
 service | Service Name | assistant-sandbox | 
+url | Health Check URL | https://url.com | 
 deploy_tag | deploy tag used in the previous step | deploy-dev | 
