@@ -19,8 +19,6 @@ configuration:
       type: string
     url:
       type: string
-    beta:
-      type: boolean
   additionalProperties: false
   required:
     - account_id
@@ -30,4 +28,3 @@ configuration:
     - deploy_tag
     - docker_registry
     - url
-    - beta
